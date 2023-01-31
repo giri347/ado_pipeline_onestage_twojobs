@@ -1,13 +1,14 @@
 
 resource "azurerm_app_service_plan" "einfoplan" {
   name                = "einfoplan-appserviceplan"
-  location            = azurerm_resource_group.appgrp.location
-  resource_group_name = azurerm_resource_group.appgrp.name
+  location            = var.location
+  resource_group_name = var.azurerm_resource_group
 
   sku {
     tier = "Standard"
-    size = "S1"
+    size = "B1"
   }
+  tags = var.tags
 }
 
 #resource "azurerm_app_service" "einfowebapp" {
@@ -17,11 +18,12 @@ resource "azurerm_app_service_plan" "einfoplan" {
 ##resource_group_name = azurerm_resource_group.appgrp.name
 #app_service_plan_id = azurerm_app_service_plan.einfoplan.id
 resource "azurerm_app_service" "einfowebapp" {
-  for_each            = toset(["einfodevwebapp", "einfoprowebapp"])
+  for_each            = toset(["einfodevwebapp151694", "einfoprowebapp151694"])
   name                = each.key
-  location            = azurerm_resource_group.appgrp.location
-  resource_group_name = azurerm_resource_group.appgrp.name
+  location            = var.location
+  resource_group_name = var.azurerm_resource_group
   app_service_plan_id = azurerm_app_service_plan.einfoplan.id
+  tags                = var.tags
 
 
   site_config {
